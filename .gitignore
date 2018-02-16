@@ -1,0 +1,5 @@
+*.png
+datasets/
+networks/
+datasets natural/
+__pycache__/
