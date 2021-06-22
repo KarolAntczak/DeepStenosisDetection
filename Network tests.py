@@ -1,6 +1,8 @@
 import pickle
 
-from Keras.keras.models import *
+import numpy as np
+from keras.models import load_model
+from tensorflow.python.keras.backend import get_session
 
 
 def load_dataset(filename):
@@ -21,7 +23,7 @@ negative_dataset = load_dataset("datasets natural/1394x32x32 negative.pickle")[0
 positive_dataset = load_dataset("datasets natural/125x32x32 positive.pickle")
 
 x_set = np.concatenate((negative_dataset,
-                        positive_dataset)).reshape(250, 32, 32, 1)
+                        positive_dataset)).reshape((250, 32, 32, 1))
 y_set = np.concatenate((generate_output_set(negative_dataset, 0),
                         generate_output_set(positive_dataset, 1)))
 
@@ -35,11 +37,11 @@ print(model.evaluate(x_set[125:250], y_set[125:250]))
 
 # strojenie
 model = load_model("networks/network.net")
-session = K.get_session()
+session = get_session()
 for layer in model.layers:
      for v in layer.__dict__:
          v_arg = getattr(layer,v)
-         if hasattr(v_arg,'initializer'):
+         if hasattr(v_arg,'initializer') and getattr(v_arg, 'initializer') is not None:
              initializer_method = getattr(v_arg, 'initializer')
              initializer_method.run(session=session)
              print('reinitializing layer {}.{}'.format(layer.name, v))

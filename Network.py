@@ -1,9 +1,10 @@
 import pickle
 
-from Keras.keras.backend import *
-from Keras.keras.layers import *
-from Keras.keras.models import *
-from Keras.keras.optimizers import SGD, Adam
+
+import numpy as np
+from tensorflow.python.keras.layers import Flatten, Dense, Dropout
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.optimizer_v2.gradient_descent import SGD
 
 
 def load_dataset(filename):
@@ -44,4 +45,4 @@ model.compile(loss='binary_crossentropy', optimizer=SGD(momentum=0.8), metrics=[
 print(model.summary())
 
 model.fit(x_set, y_set, batch_size=100, epochs=1000, verbose=2, validation_split=0.2)
-model.save("networks/128d1d.net", overwrite=True)
+model.save("networks/network.net", overwrite=True)
